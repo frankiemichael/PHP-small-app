@@ -1,0 +1,92 @@
+body{
+  padding-top:120px;
+}
+
+.heading{
+	width: 100%;
+	margin: 30px auto;
+	text-align: center;
+	color: 	#343a40;
+	background: #98c1d9;
+	border-top: 2px solid #343a40;
+  border-bottom: 2px solid #343a40;
+}
+.input_form {
+	width: 30%;
+	margin: 30px auto;
+	border-radius: 5px;
+	padding: 10px;
+	background: #e0fbfc;
+	border: 1px solid #343a40;
+}
+form p {
+	color: red;
+	margin: 0px;
+}
+.task_input {
+	width: 75%;
+	height: 15px;
+	padding: 10px;
+	border: 2px solid black;
+}
+.add_btn {
+	height: 39px;
+	background: #98c1d9;
+	color: 	#343a40;
+	border: 2px solid #343a40;
+	border-radius: 5px;
+	padding: 5px 20px;
+  margin-right:20px;
+  position: relative;
+  left:15vw;
+}
+
+table {
+    width: 80%;
+    margin: 30px auto;
+    border-collapse: collapse;
+}
+
+tr {
+	border-bottom: 1px solid #343a40;
+}
+
+th {
+	font-size: 19px;
+	color: #343a40;
+}
+
+th, td{
+	border: none;
+    height: 30px;
+    padding: 2px;
+}
+
+tr:hover {
+	background: #FFF8DC;
+}
+
+.task {
+	text-align: left;
+}
+
+.delete{
+	text-align: center;
+}
+.delete a{
+	color: white;
+	background: #a52a2a;
+	padding: 1px 6px;
+	border-radius: 3px;
+	text-decoration: none;
+}
+.complete{
+	text-align: center;
+  white-space: nowrap;
+}
+.complete a{
+
+	padding: 1px 6px;
+	border-radius: 3px;
+	text-decoration: none;
+}

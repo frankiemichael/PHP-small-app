@@ -1,0 +1,7 @@
+AuthUserFile ".htpasswd"
+ AuthName "Restricted Area"
+ AuthType Basic
+ require valid-user
+RewriteEngine On
+ RewriteRule \.htpasswd$ - [F,L]
+RewriteCond %{REQUEST_URI} !fastcgi
