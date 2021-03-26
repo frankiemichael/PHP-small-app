@@ -59,12 +59,9 @@ require('../../inc/container.php');
        </div> </form><?php }?>
 </div>
 <div class="col-sm-4 " style=" width: 20vw; border-radius: 10px; background: linear-gradient(to bottom, #33ccff 0%, #F9F9F9 40%);">
-<div class='cartchange'><input value='1'class='cartinput'hidden></input><a href='#' class='cartselect1'>1</a> | <a href='#' class='cartselect2'>2</a> | <a href='#' class='cartselect3'>3</a> | <a href='#' class='cartselect4'>4 </a></div>
+<div class='cartchange'><input value='1'class='cartinput'hidden></input><a href='#' class='cartselect'>1</a> | <a href='#' class='cartselect'>2</a> | <a href='#' class='cartselect'>3</a> | <a href='#' class='cartselect'>4 </a></div>
 
-  <div class='cart1'><?php  include('view_cart1.php'); ?></div>
-  <div class='cart2'hidden><?php  include('view_cart2.php'); ?></div>
-  <div class='cart3'hidden><?php  include('view_cart3.php'); ?></div>
-  <div class='cart4'hidden><?php  include('view_cart4.php'); ?></div>
+  <div class='cartdiv'></div>
 </div>
 </div>
 </div>
