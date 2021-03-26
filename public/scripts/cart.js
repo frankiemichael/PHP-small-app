@@ -1,76 +1,18 @@
 $(document).ready(function(){
-  $('.cartselect1').on('click', function(){
-    $('.cartinput').attr('value', '1')
-    $('.cart1').attr('hidden', false)
-    $('.cart2').attr('hidden', true)
-    $('.cart3').attr('hidden', true)
-    $('.cart4').attr('hidden', true)
-    //Remove items from cart
-    $("#shopping-cart-results").on('click', 'a.remove-item', function(e) {
-      console.log('test')
-      e.preventDefault();
-      var pcode = $(this).attr("data-code");
-      var cartnumber = $('.cartinput').val()
-      $(this).parent().parent().fadeOut();
-      $.getJSON( "manage_cart"+cartnumber+".php", {"remove_code":pcode} , function(data){
-        $("#cart-container").html(data.products);
-        window.location.reload();
-      });
-    });
-  })
-  $('.cartselect2').on('click', function(){
-    $('.cartinput').attr('value', '2')
-    $('.cart1').attr('hidden', true)
-    $('.cart2').attr('hidden', false)
-    $('.cart3').attr('hidden', true)
-    $('.cart4').attr('hidden', true)
-    $("#shopping-cart-results").on('click', 'a.remove-item', function(e) {
-      console.log('test')
-      e.preventDefault();
-      var pcode = $(this).attr("data-code");
-      var cartnumber = $('.cartinput').val()
-      $(this).parent().parent().fadeOut();
-      $.getJSON( "manage_cart"+cartnumber+".php", {"remove_code":pcode} , function(data){
-        $("#cart-container").html(data.products);
-        window.location.reload();
-      });
-    });
-  })
-  $('.cartselect3').on('click', function(){
-    $('.cartinput').attr('value', '3')
-    $('.cart1').attr('hidden', true)
-    $('.cart2').attr('hidden', true)
-    $('.cart3').attr('hidden', false)
-    $('.cart4').attr('hidden', true)
-    $("#shopping-cart-results").on('click', 'a.remove-item', function(e) {
-      console.log('test')
-      e.preventDefault();
-      var pcode = $(this).attr("data-code");
-      var cartnumber = $('.cartinput').val()
-      $(this).parent().parent().fadeOut();
-      $.getJSON( "manage_cart"+cartnumber+".php", {"remove_code":pcode} , function(data){
-        $("#cart-container").html(data.products);
-        window.location.reload();
-      });
-    });
-  })
-  $('.cartselect4').on('click', function(){
-    $('.cartinput').attr('value', '4')
-    $('.cart1').attr('hidden', true)
-    $('.cart2').attr('hidden', true)
-    $('.cart3').attr('hidden', true)
-    $('.cart4').attr('hidden', false)
-    $("#shopping-cart-results").on('click', 'a.remove-item', function(e) {
-      console.log('test')
-      e.preventDefault();
-      var pcode = $(this).attr("data-code");
-      var cartnumber = $('.cartinput').val()
-      $(this).parent().parent().fadeOut();
-      $.getJSON( "manage_cart"+cartnumber+".php", {"remove_code":pcode} , function(data){
-        $("#cart-container").html(data.products);
-        window.location.reload();
-      });
-    });
+  $('.cartselect').on('click', function(){
+    var cartnumber = $(this).text()
+    console.log(cartnumber)
+    var viewcart = "view_cart"
+    var php = ".php"
+    var url = viewcart + cartnumber + php
+    $.ajax({
+      type:"GET",
+      url:url,
+
+      success:function(result){
+        $('.cartdiv').append(result)
+      }
+    })
   })
 	// update product quantity in cart
     $(".quantity").change(function() {
