@@ -14,7 +14,7 @@
     <a class="nav-link" href="/tremenheere/public/tasks.php">My Tasks</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="/tremenheere/public/tremenheerepos/index.php">Tremenheere POS</a>
+    <a class="nav-link" href="/tremenheere/public/tremenheerepos/index.php?view_cart=1">Tremenheere POS</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="/tremenheere/public/orderstock/index.php">Order Stock from Trereife</a>

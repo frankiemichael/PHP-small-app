@@ -341,3 +341,6 @@ height:150px;
 .productwrap{
 	width:60vw;
 }
+.reports div{
+	border: 1px solid green;
+}

@@ -17,9 +17,11 @@ foreach ($items as $key => $value){
   $q = mysqli_query($conn, $sql2) or die (mysqli_error($conn));
   $sql3 = "UPDATE shop_products SET product_stock = product_stock - $qty WHERE id = $id";
   $q2 = mysqli_query($conn, $sql3) or die (mysqli_error($conn));
+  $sql4 = "UPDATE shop_products SET product_sales = product_sales + $qty WHERE id = $id";
+  $q3 = mysqli_query($conn, $sql4) or die (mysqli_error($conn));
 
 }
 
-
+header('Location: success.php');
 
  ?>

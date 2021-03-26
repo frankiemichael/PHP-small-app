@@ -1,18 +1,8 @@
 $(document).ready(function(){
   $('.cartselect').on('click', function(){
+    $('.cartdiv').empty()
     var cartnumber = $(this).text()
-    console.log(cartnumber)
-    var viewcart = "view_cart"
-    var php = ".php"
-    var url = viewcart + cartnumber + php
-    $.ajax({
-      type:"GET",
-      url:url,
-
-      success:function(result){
-        $('.cartdiv').append(result)
-      }
-    })
+    $('.cartinput').attr('value', cartnumber)
   })
 	// update product quantity in cart
     $(".quantity").change(function() {

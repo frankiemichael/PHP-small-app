@@ -9,13 +9,14 @@ include("../../inc/header.php");
 <script type="text/javascript" src="../scripts/cart.js"></script>
 <?php include('../../inc/container.php');?>
 <div class="container">
-<h3 style="text-align:left">Review Your Cart Before Buying</h3>
+<h3 style="text-align:left">Review Cart</h3>
 <?php
 if(isset($_SESSION["products3"]) && count($_SESSION["products3"])>0){
 	$total = 0;
 	?>
 	<table class="table" id="shopping-cart-results" style="margin-top:80px;">
 	<thead>
+		<a href="index.php?view_cart=3" class="btn btn-warning"><i class="fas fa-arrow-circle-left"></i> Go Back</a>
 	<tr>
 	<th>Product</th>
 	<th>Price</th>
@@ -35,7 +36,7 @@ if(isset($_SESSION["products3"]) && count($_SESSION["products3"])>0){
 		?>
 		<tr>
 		<td><?php echo $product_name;?></td>
-		<td><?php echo $product_price; ?></td>
+		<td><?php echo $currency . $product_price; ?></td>
 		<td><?php echo $product_qty; ?></td>
 		<td><?php echo $currency; echo sprintf("%01.2f", ($product_price * $product_qty)); ?></td>
 		<td>&nbsp;</td>
@@ -50,27 +51,71 @@ if(isset($_SESSION["products3"]) && count($_SESSION["products3"])>0){
 	?>
 	<tfoot>
 	<tr>
-	<td><br><br><br><br><br><br><a href="index.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Continue Shopping</a></td>
-	<td><input id='notes' placeholder="Notes about this order"></input></td>
-	<td>&nbsp;</td>
+	<td><br><textarea id='notes' placeholder="Notes about this order"></textarea></td>
+	<td><br><br><br><br><br><span style='float: right;' class="input-group-text">£</span>
+		     <span style='float: right;' class="input-group-text">£</span></td>
+	<td><br><br><br><br><br><form><input placeholder='Handled' type='number' style='width:72px; height:38px;' id='cashamount'</input>
+	<input type='number' style='width:72px;height:38px;' placeholder="Change"id='cashchange'readonly></input><button id='cash' type='submit' name='cash' class="btn btn-success btn-block"><i class="fas fa-arrow-circle-right"></i>Cash</button></form></td>
 	<td class="text-center view-cart-total"><strong><?php echo $cart_box; ?></strong></td>
-	<td><br><br><br><br><br><br><form><button id='placeorder' type='submit' class="btn btn-success btn-block">Place Order </button></form></td>
+	<td><br><br><br><br><br><br><br><br><form><button style='margin-top:4px;'name="card" id='card' type='submit' class="btn btn-success btn-block"><i class="fas fa-arrow-circle-right"></i>Card</button></form></td>
 	</tr>
 	</tfoot>
 	<script type="text/javascript">
-	var grandtotal = "<?php echo $grand_total; ?>"	$('#notes').on('change', function(){
-		var notes = $(this).val()
-
+	var grandtotal = "<?php echo $grand_total; ?>"
+	$('#cashamount').on('change', function(){
+		if($(this).val()){
+		$('#cashchange').val($('#cashamount').val() - grandtotal)
+	}else{
+		$('#cashchange').val('')
+}
 	})
 
-		$('#placeorder').on('click', function(e){
+		$('#cash').on('click', function(e){
+			var notes = $('#notes').val()
+		e.preventDefault();
+	$.ajax({
+		url: "order3.php",
+		type: "POST",
+		data: {
+			paymentmethod:"Cash",
+			notes: notes,
+		grandtotal: grandtotal
+	},
+		cache: false,
+		success: function(result){
+					var itemsjson = '<?php echo $products;?>'
+					var items = JSON.parse(itemsjson)
+					$.each(items, function(id, items){
+						var item = items
+					$.ajax({
+						url: "orderdetails.php",
+						type: "POST",
+						data: JSON.stringify({
+						item: item
+					}),
+						cache: false,
+						success: function(result){
+							document.location.href = 'success.php'
+						},
+						error: function(error){
+							alert('There was an error processing your order.')
+						}
+					})
+					})
+		},
+		error: function(error){
+			console.log(error)
+		}
+	})
+		})
+		$('#card').on('click', function(e){
 				var notes = $('#notes').val()
-					console.log(notes)
 			e.preventDefault();
 		$.ajax({
 			url: "order3.php",
 			type: "POST",
 	    data: {
+				paymentmethod:"Card",
 				notes: notes,
 	    grandtotal: grandtotal
 		},
@@ -90,9 +135,7 @@ if(isset($_SESSION["products3"]) && count($_SESSION["products3"])>0){
 						}),
 							cache: false,
 							success: function(result){
-								console.log(result)
-								console.log(notes)
-								//document.location.href = 'success.php'
+								document.location.href = 'success.php'
 							},
 							error: function(error){
 								alert('There was an error processing your order.')

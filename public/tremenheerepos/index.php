@@ -9,6 +9,8 @@ require("../../inc/header.php");
 include("../../inc/db_connect.php");
 include("../../inc/config.inc.php");
 require('../../inc/container.php');
+
+
 ?>
 
 <title>TremenheerePOS</title>
@@ -59,9 +61,28 @@ require('../../inc/container.php');
        </div> </form><?php }?>
 </div>
 <div class="col-sm-4 " style=" width: 20vw; border-radius: 10px; background: linear-gradient(to bottom, #33ccff 0%, #F9F9F9 40%);">
-<div class='cartchange'><input value='1'class='cartinput'hidden></input><a href='#' class='cartselect'>1</a> | <a href='#' class='cartselect'>2</a> | <a href='#' class='cartselect'>3</a> | <a href='#' class='cartselect'>4 </a></div>
+<div class='cartchange'><a rel="nofollow" href='?view_cart=1' class='cartselect'>1</a> | <a rel="nofollow" href='?view_cart=2' class='cartselect'>2</a> | <a rel="nofollow" href='?view_cart=3' class='cartselect'>3</a> | <a rel="nofollow" href='?view_cart=4' class='cartselect'>4 </a></div>
 
-  <div class='cartdiv'></div>
+  <div class='cartdiv'>
+    <?php
+    if (isset($_GET['view_cart'])) {
+      $cartnumber = $_GET['view_cart'];
+      if ($cartnumber == 1){
+        include('view_cart1.php');
+        echo "<input value='1'class='cartinput'hidden></input>";
+      }elseif($cartnumber == 2){
+        include('view_cart2.php');
+        echo "<input value='2'class='cartinput'hidden></input>";
+      }elseif($cartnumber == 3){
+        include('view_cart3.php');
+        echo "<input value='3'class='cartinput'hidden></input>";
+      }elseif($cartnumber == 4){
+        include('view_cart4.php');
+        echo "<input value='4'class='cartinput'hidden></input>";
+      }
+    }
+     ?>
+  </div>
 </div>
 </div>
 </div>
