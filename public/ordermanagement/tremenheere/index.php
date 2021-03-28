@@ -27,7 +27,9 @@ include('../../../inc/container.php');
   <div class="row">
     <div class="col-sm">
       <h5>Today</h5>
-
+      <?php
+      
+       ?>
     </div>
     <div class="col-sm">
       <h5>This Month</h5>

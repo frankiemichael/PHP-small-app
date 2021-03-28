@@ -4,7 +4,6 @@ body{
 
 .heading{
 	width: 100%;
-	margin: 30px auto;
 	text-align: center;
 	color: 	#343a40;
 	background: #98c1d9;
@@ -65,7 +64,6 @@ th, td{
 tr:hover {
 	background: #FFF8DC;
 }
-
 .task {
 	text-align: left;
 }

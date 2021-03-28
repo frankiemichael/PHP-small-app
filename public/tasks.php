@@ -90,7 +90,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 			<option style='background-color: red;'value="High">High</option>
 		</select><br>
 		<label for="staff"required>Set Staff</label>
-		<select class="staff" name="staff">
+		<select class="staff" name="staff"multiple>
 				<option value="10">All</option>
 				<option value="1">Daniel Michael</option>
 				<option value="2">Mark Lea</option>
@@ -129,13 +129,12 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 		$tasks = mysqli_query($conn, "SELECT * FROM todo");
 
 		$i = 1; while ($row = mysqli_fetch_array($tasks)) { ?>
-			<tr>
+			<tr class='<?php echo $i; ?>'>
 				<td hidden> <?php echo $i; ?> </td>
-
 				<td class="date"><?php echo $row['date'];  ?></td>
 				<td class="deadline"><?php echo $row['deadline'];  ?></td>
 				<td class="task"><b> <?php echo $row['task']; ?> </b></td>
-				<td class='priority'><?php echo $row['priority']; ?></td>
+				<td class='priority'><span class='prioritycolour'><?php echo $row['priority']; ?></span></td>
 				<?php
 				$idname = $row['staffid'];
 				$sql = "SELECT * FROM accounts WHERE id = $idname";
@@ -143,7 +142,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 				while($result = mysqli_fetch_assoc($query)){
 				?>
 				<td class='setfor'><?php echo $result['username']; } ?></td>
-				<td class='status'><?php if ($row['completed'] == 1){ echo $row['completed'] . "d - " . $row['timecompleted'];}else{ echo $row['completed'];} ?></td>
+				<td class='status'><span class='statuscolour'><?php if ($row['completed'] == 1){ echo $row['completed'] . "d - " . $row['timecompleted'];}else{ echo $row['completed'];} ?></span></td>
 				<td class='action'>
 				<div class="delete">
 					<a href="tasks.php?del_task=<?php echo $row['id'] ?>"><i class="fas fa-trash-alt"></i></a>
@@ -152,6 +151,41 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 						<a href="tasks.php?incomplete_task=<?php echo $row['id'] ?>"><i class="fas fa-window-close"></i></a>
 						<a href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
 					</div>
+				</td>
+			</tr>
+			<tr class='<?php echo $i; ?>' style='display:none;height:200px;background-color: lightgrey;'>
+				<td>
+					<h5>Date Set</h5>
+					<?php echo $row['date']; ?>
+					<h5 style="margin-top:10px;">Deadline</h5>
+					<?php if ($row['weekly'] == 1){ echo 'Weekly - Every ' . $row['day'];}else{ echo 'Daily - By '. $row['time'];} ?>
+				</td>
+				<td>
+					<h5>Task Details</h5>
+					<?php echo $row['task']; ?>
+					<h5 style="margin-top:10px;">Priority</h5>
+					<span class='prioritycolour'><?php echo $row['priority']; ?></span>
+				</td>
+				<td>
+					<h5>Set for</h5>
+					<?php
+					$idname = $row['staffid'];
+					$sql = "SELECT * FROM accounts WHERE id = $idname";
+					$query = mysqli_query($conn, $sql);
+					while($result = mysqli_fetch_assoc($query)){
+					?>
+					<?php echo $result['username']; } ?>
+					<h5 style="margin-top:10px;">Status</h5>
+					<span class='statuscolour'><?php echo $row['completed']; ?></span>
+				</td>
+				<td>
+					<div class="delete">
+						<a href="tasks.php?del_task=<?php echo $row['id'] ?>"><i class="fas fa-trash-alt"></i></a>
+					</div>
+						<div class="complete">
+							<a href="tasks.php?incomplete_task=<?php echo $row['id'] ?>"><i class="fas fa-window-close"></i></a>
+							<a href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
+						</div>
 				</td>
 			</tr>
 		<?php $i++; } ?>
@@ -189,7 +223,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 			<td class="date"><?php echo $row['date']; ?></td>
 			<td class="deadline" style="color:green;"><?php if ($row['weekly'] == 1){ echo 'Weekly - Every ' . $row['day'];}else{ echo 'Daily - By '. $row['time'];} ?></td>
 			<td class="task"><b> <?php echo $row['task']; ?> </b></td>
-			<td class='priority'><?php echo $row['priority']; ?></td>
+			<td class='priority'><span class='prioritycolour'><?php echo $row['priority']; ?></span></td>
 			<?php
 			$idname = $row['staffid'];
 			$sql = "SELECT * FROM accounts WHERE id = $idname";
@@ -197,12 +231,12 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 			while($result = mysqli_fetch_assoc($query)){
 			?>
 			<td class='setfor'><?php echo $result['username']; } ?></td>
-			<td class='status'><?php echo $row['completed']; ?></td>
+			<td class='status'><span class='statuscolour'><?php echo $row['completed']; ?></span></td>
 			<td class="action complete">
 				<a href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
 			</td>
 		</tr>
-		<tr style='height:200px;'>
+		<tr style='display:none;height:200px;background-color: lightgrey;'>
 			<td>
 				<h5>Date Set</h5>
 				<?php echo $row['date']; ?>
@@ -213,7 +247,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 				<h5>Task Details</h5>
 				<?php echo $row['task']; ?>
 				<h5 style="margin-top:10px;">Priority</h5>
-				<?php echo $row['priority']; ?>
+				<span class='prioritycolour'><?php echo $row['priority']; ?></span>
 			</td>
 			<td>
 				<h5>Set for</h5>
@@ -224,17 +258,50 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 				while($result = mysqli_fetch_assoc($query)){
 				?>
 				<?php echo $result['username']; } ?>
-				<h5>Status</h5>
-				<span class='status'><?php echo $row['completed']; ?></span>
+				<h5 style="margin-top:10px;">Status</h5>
+				<span class='statuscolour'><?php echo $row['completed']; ?></span>
 			</td>
-			<td></td>
+			<td>
+				<h5>Mark complete</h5>
+				<a style="display: block;margin-left:45%;" href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
+			</td>
+		</tr>
+		<tr style='display:none;height:200px;background-color: lightgrey;'>
+			<td>
+				<h5>Date Set</h5>
+				<?php echo $row['date']; ?>
+				<h5 style="margin-top:10px;">Deadline</h5>
+				<?php if ($row['weekly'] == 1){ echo 'Weekly - Every ' . $row['day'];}else{ echo 'Daily - By '. $row['time'];} ?>
+			</td>
+			<td>
+				<h5>Task Details</h5>
+				<?php echo $row['task']; ?>
+				<h5 style="margin-top:10px;">Priority</h5>
+				<span class='prioritycolour'><?php echo $row['priority']; ?></span>
+			</td>
+			<td>
+				<h5>Set for</h5>
+				<?php
+				$idname = $row['staffid'];
+				$sql = "SELECT * FROM accounts WHERE id = $idname";
+				$query = mysqli_query($conn, $sql);
+				while($result = mysqli_fetch_assoc($query)){
+				?>
+				<?php echo $result['username']; } ?>
+				<h5 style="margin-top:10px;">Status</h5>
+				<span class='statuscolour'><?php echo $row['completed']; ?></span>
+			</td>
+			<td>
+				<h5>Mark complete</h5>
+				<a style="display: block;margin-left:45%;" href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
+			</td>
 		</tr>
 	<?php $i++; } ?>
 </tbody>
 </table>
 
 <div class="heading">
-	<h2 style="font-style: 'Hervetica';">My Daily Tasks</h2>
+	<h2 style="font-style: 'Hervetica';">One Time Tasks</h2>
 </div>
 <table>
 <thead>
@@ -263,7 +330,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 			<td class="date"><?php echo $row['date'];  ?></td>
 			<td class="deadline"><?php echo $row['deadline'];  ?></td>
 			<td class="task"><b> <?php echo $row['task']; ?> </b></td>
-			<td class='priority'><?php echo $row['priority']; ?></td>
+			<td class='priority'><span class='prioritycolour'><?php echo $row['priority']; ?></span></td>
 			<?php
 			$idname = $row['staffid'];
 			$sql = "SELECT * FROM accounts WHERE id = $idname";
@@ -271,12 +338,41 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 			while($result = mysqli_fetch_assoc($query)){
 			?>
 			<td class='setfor'><?php echo $result['username']; } ?></td>
-			<td class='status'><?php echo $row['completed']; ?></td>
+			<td class='status'><span class='statuscolour'><?php echo $row['completed']; ?></span></td>
 			<td class="action complete">
 				<a href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
 			</td>
 		</tr>
-
+		<tr style='display:none;height:200px;background-color: lightgrey;'>
+			<td>
+				<h5>Date Set</h5>
+				<?php echo $row['date']; ?>
+				<h5 style="margin-top:10px;">Deadline</h5>
+				<?php echo $row['deadline']; ?>
+			</td>
+			<td>
+				<h5>Task Details</h5>
+				<?php echo $row['task']; ?>
+				<h5 style="margin-top:10px;">Priority</h5>
+				<span class='prioritycolour'><?php echo $row['priority']; ?></span>
+			</td>
+			<td>
+				<h5>Set for</h5>
+				<?php
+				$idname = $row['staffid'];
+				$sql = "SELECT * FROM accounts WHERE id = $idname";
+				$query = mysqli_query($conn, $sql);
+				while($result = mysqli_fetch_assoc($query)){
+				?>
+				<?php echo $result['username']; } ?>
+				<h5 style="margin-top:10px;">Status</h5>
+				<span class='statuscolour'><?php echo $row['completed']; ?></span>
+			</td>
+			<td>
+				<h5>Mark complete</h5>
+				<a style="display: block;margin-left:45%;" href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
+			</td>
+		</tr>
 	<?php $i++; } ?>
 </tbody>
 </table>

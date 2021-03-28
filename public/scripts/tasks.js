@@ -1,17 +1,17 @@
 $(document).ready(function(){
-  $(".status").text(function(){
+  $(".statuscolour").text(function(){
     if ($(this).text() === '0'){
       $(this).text('Incomplete')
     }
   })
-  $(".status").text(function(){
+  $(".statuscolour").text(function(){
     return  $(this).text().replace("1", "Complete");
   })
-$("td:contains(Complete)").css("color","green");
-$("td:contains(Incomplete)").css("color","red");
-$("td:contains(Low)").css("color","green");
-$("td:contains(Medium)").css("color","orange");
-$("td:contains(High)").css("color","red");
+$("span:contains(Complete)").css("color","green");
+$("span:contains(Incomplete)").css("color","red");
+$("span:contains(Low)").css("color","green");
+$("span:contains(Medium)").css("color","orange");
+$("span:contains(High)").css("color","red");
 $(".date").html(function(i, oldHTML) {
     return oldHTML.replace(/ /g, '<br/>');
 });
@@ -71,6 +71,13 @@ if ($(window).width() < 960) {
     width: '100%',
   })
   $('.date, .setfor, .status').hide()
+
+  $('tr').on('click', function(){
+    $(this).next('tr').off()
+    $(this).next('tr').fadeToggle(500)
+
+
+    })
 }
 else {
   $('.date, .task').show()
