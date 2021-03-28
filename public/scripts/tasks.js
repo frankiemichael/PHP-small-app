@@ -1,6 +1,8 @@
 $(document).ready(function(){
   $(".status").text(function(){
-    return  $(this).text().replace("0", "Incomplete");
+    if ($(this).text() === '0'){
+      $(this).text('Incomplete')
+    }
   })
   $(".status").text(function(){
     return  $(this).text().replace("1", "Complete");
@@ -64,7 +66,15 @@ $('.weekly').on('change', function(){
   })
 }
 })
-
+if ($(window).width() < 960) {
+  $('table').css({
+    width: '100%',
+  })
+  $('.date, .setfor, .status').hide()
+}
+else {
+  $('.date, .task').show()
+}
 
 
 })

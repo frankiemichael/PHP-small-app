@@ -43,14 +43,15 @@ include('../inc/db_connect.php');
 }
 if (isset($_GET['complete_task'])) {
 $id = $_GET['complete_task'];
-
-mysqli_query($conn, "UPDATE todo SET completed=1 WHERE id=".$id);
+date_default_timezone_set('Europe/London');
+$date = date('Y-m-d H:i:s', time());
+mysqli_query($conn, "UPDATE todo SET completed=1, timecompleted='$date' WHERE id=".$id);
 
 }
 if (isset($_GET['incomplete_task'])) {
 $id = $_GET['incomplete_task'];
 
-mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
+mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".$id);
 
 }
 
@@ -109,16 +110,16 @@ mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
 </div>
   <table>
 	<thead>
-		
+
 		<tr>
 			<th hidden>ID</th>
-			<th>Start Date</th>
-			<th>Deadline</th>
-			<th style="width: 40%;">Task</th>
-			<th>Priority</th>
-			<th>Set for</th>
-			<th>Status</th>
-			<th style="width: 60px;">Action</th>
+			<th class='date'>Start Date</th>
+			<th class='deadline'>Deadline</th>
+			<th class='task' style="width: 40%;">Task</th>
+			<th class='priority'>Priority</th>
+			<th class='setfor'>Set for</th>
+			<th class='status'>Status</th>
+			<th class='action' style="width: 60px;">Action</th>
 		</tr>
 	</thead>
 
@@ -142,7 +143,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
 				while($result = mysqli_fetch_assoc($query)){
 				?>
 				<td class='setfor'><?php echo $result['username']; } ?></td>
-				<td class='status'><?php echo $row['completed']; ?></td>
+				<td class='status'><?php if ($row['completed'] == 1){ echo $row['completed'] . "d - " . $row['timecompleted'];}else{ echo $row['completed'];} ?></td>
 				<td class='action'>
 				<div class="delete">
 					<a href="tasks.php?del_task=<?php echo $row['id'] ?>"><i class="fas fa-trash-alt"></i></a>
@@ -166,13 +167,13 @@ mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
 <thead>
 	<tr>
 		<th hidden>ID</th>
-		<th>Start Date</th>
-		<th>Occurs</th>
-		<th style="width: 40%;">Task</th>
-		<th>Priority</th>
-		<th>Set for</th>
-		<th>Status</th>
-		<th style="width: 60px;">Action</th>
+		<th class='date'>Start Date</th>
+		<th class='deadline'>Deadline</th>
+		<th class='task' style="width: 40%;">Task</th>
+		<th class='priority'>Priority</th>
+		<th class='setfor'>Set for</th>
+		<th class='status'>Status</th>
+		<th class='action' style="width: 60px;">Action</th>
 	</tr>
 </thead>
 
@@ -185,7 +186,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
 		<tr>
 			<td hidden> <?php echo $i; ?> </td>
 
-			<td class="date"><?php echo $row['date'];  ?></td>
+			<td class="date"><?php echo $row['date']; ?></td>
 			<td class="deadline" style="color:green;"><?php if ($row['weekly'] == 1){ echo 'Weekly - Every ' . $row['day'];}else{ echo 'Daily - By '. $row['time'];} ?></td>
 			<td class="task"><b> <?php echo $row['task']; ?> </b></td>
 			<td class='priority'><?php echo $row['priority']; ?></td>
@@ -201,6 +202,33 @@ mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
 				<a href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
 			</td>
 		</tr>
+		<tr style='height:200px;'>
+			<td>
+				<h5>Date Set</h5>
+				<?php echo $row['date']; ?>
+				<h5 style="margin-top:10px;">Deadline</h5>
+				<?php if ($row['weekly'] == 1){ echo 'Weekly - Every ' . $row['day'];}else{ echo 'Daily - By '. $row['time'];} ?>
+			</td>
+			<td>
+				<h5>Task Details</h5>
+				<?php echo $row['task']; ?>
+				<h5 style="margin-top:10px;">Priority</h5>
+				<?php echo $row['priority']; ?>
+			</td>
+			<td>
+				<h5>Set for</h5>
+				<?php
+				$idname = $row['staffid'];
+				$sql = "SELECT * FROM accounts WHERE id = $idname";
+				$query = mysqli_query($conn, $sql);
+				while($result = mysqli_fetch_assoc($query)){
+				?>
+				<?php echo $result['username']; } ?>
+				<h5>Status</h5>
+				<span class='status'><?php echo $row['completed']; ?></span>
+			</td>
+			<td></td>
+		</tr>
 	<?php $i++; } ?>
 </tbody>
 </table>
@@ -212,13 +240,13 @@ mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
 <thead>
 	<tr>
 		<th hidden>ID</th>
-		<th>Start Date</th>
-		<th>Deadline</th>
-		<th style="width: 40%;">Task</th>
-		<th>Priority</th>
-		<th>Set for</th>
-		<th>Status</th>
-		<th style="width: 60px;">Action</th>
+		<th class='date'>Start Date</th>
+		<th class='deadline'>Deadline</th>
+		<th class='task' style="width: 40%;">Task</th>
+		<th class='priority'>Priority</th>
+		<th class='setfor'>Set for</th>
+		<th class='status'>Status</th>
+		<th class='action' style="width: 60px;">Action</th>
 	</tr>
 </thead>
 
@@ -248,6 +276,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0 WHERE id=".$id);
 				<a href="tasks.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check"></i></a>
 			</td>
 		</tr>
+
 	<?php $i++; } ?>
 </tbody>
 </table>
