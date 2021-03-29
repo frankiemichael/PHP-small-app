@@ -70,6 +70,7 @@ if ($(window).width() < 960) {
   $('table').css({
     width: '100%',
   })
+  $('.input_form').css(	'width', '100%')
   $('.date, .setfor, .status').hide()
 
   $('tr').on('click', function(){
@@ -82,6 +83,6 @@ if ($(window).width() < 960) {
 else {
   $('.date, .task').show()
 }
-
+$('.staff').on('click')
 
 })

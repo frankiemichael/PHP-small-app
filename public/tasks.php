@@ -18,19 +18,24 @@ include('../inc/db_connect.php');
 			$deadline = $_POST['deadline'];
 			$task = $_POST['task'];
 			$priority = $_POST['priority'];
-			$staffid = $_POST['staff'];
+			$checkbox1 = $_POST['staff'];
 			$weekly = $_POST['weekly'];
+			$chk="";
+			foreach($checkbox1 as $chk1)
+   {
+      $chk .= $chk1.",";
+   }
 			if($weekly == 0){
-			$sql = "INSERT INTO todo (deadline, task, priority, staffid) VALUES ('$deadline','$task','$priority',$staffid)";
+			$sql = "INSERT INTO todo (deadline, task, priority, staffid) VALUES ('$deadline','$task','$priority','$chk')";
 			mysqli_query($conn, $sql) or die(mysqli_error($conn));
 		}elseif($weekly == 1){
 				$day = $_POST['day'];
-			$sql = "INSERT INTO todo (deadline, task, priority, staffid, weekly, day) VALUES ('$deadline','$task','$priority',$staffid,$weekly,'$day')";
+			$sql = "INSERT INTO todo (deadline, task, priority, staffid, weekly, day) VALUES ('$deadline','$task','$priority','$chk',$weekly,'$day')";
 			mysqli_query($conn, $sql) or die(mysqli_error($conn));
 		}elseif ($weekly == 2) {
 			$deadline = $_POST['dailytime'];
 			$time = $_POST['deadline'];
-			$sql = "INSERT INTO todo (deadline, task, priority, staffid, daily, time) VALUES ('$deadline','$task','$priority',$staffid,1, '$time')";
+			$sql = "INSERT INTO todo (deadline, task, priority, staffid, daily, time) VALUES ('$deadline','$task','$priority','$chk',1, '$time')";
 			mysqli_query($conn, $sql) or die(mysqli_error($conn));
 		}
 		}
@@ -72,7 +77,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 	<div class="heading">
 		<h2 style="font-style: 'Hervetica';">Task List</h2>
 	</div>
-	<form method="post" action="tasks.php" class="input_form">
+	<form method="post" action="tasks.php" class="input_form" enctype='multipart/form-data'>
 		<label for="weekly">Recurring Task?</label>
 		<select class='weekly' name="weekly"required>
 			<option value="0">One time</option>
@@ -89,18 +94,17 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 			<option style='background-color: orange;' value="Medium">Medium</option>
 			<option style='background-color: red;'value="High">High</option>
 		</select><br>
-		<label for="staff"required>Set Staff</label>
-		<select class="staff" name="staff"multiple>
-				<option value="10">All</option>
-				<option value="1">Daniel Michael</option>
-				<option value="2">Mark Lea</option>
-				<option value="3">Lisa Blake</option>
-				<option value="4">Louise Twigger</option>
-				<option value="5">Jack Michael</option>
-				<option value="6">Angkhan Phumiwet</option>
-				<option value="7">Jack Drewitt</option>
-				<option value="8">Frankie Michael</option>
-		</select>
+		<label for="staff"required>Set Staff</label><br>
+
+				<input type='checkbox' class="staff" name="staff[]" value="10"> ALL</input> <br>
+				<input type='checkbox' class="staff" name="staff[]" value="1"> Daniel Michael</input> |
+				<input type='checkbox' class="staff" name="staff[]" value="2"> Mark Lea</input> |
+				<input type='checkbox' class="staff" name="staff[]" value="3"> Lisa Blake</input> |
+				<input type='checkbox' class="staff" name="staff[]" value="4"> Louise Twigger</input> |
+				<input type='checkbox' class="staff" name="staff[]" value="5"> Jack Michael</input> |
+				<input type='checkbox' class="staff" name="staff[]" value="6"> Angkhan Phumiwet</input> |
+				<input type='checkbox' class="staff" name="staff[]" value="7"> Jack Drewitt</input> |
+				<input type='checkbox' class="staff" name="staff[]" value="8"> Frankie Michael</input> |
 
 		<br><button type="submit" name="submit" id="add_btn" class="add_btn">Add Task</button>
 	</form>
@@ -135,13 +139,17 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 				<td class="deadline"><?php echo $row['deadline'];  ?></td>
 				<td class="task"><b> <?php echo $row['task']; ?> </b></td>
 				<td class='priority'><span class='prioritycolour'><?php echo $row['priority']; ?></span></td>
+				<td class='setfor'>
 				<?php
 				$idname = $row['staffid'];
-				$sql = "SELECT * FROM accounts WHERE id = $idname";
+				$array=array_map('intval', explode(',', $idname));
+				$array = implode("','",$array);
+				$sql = "SELECT * FROM accounts WHERE id IN ('".$array."')";
 				$query = mysqli_query($conn, $sql);
 				while($result = mysqli_fetch_assoc($query)){
+					echo $result['username'] . ", "; }
 				?>
-				<td class='setfor'><?php echo $result['username']; } ?></td>
+			</td>
 				<td class='status'><span class='statuscolour'><?php if ($row['completed'] == 1){ echo $row['completed'] . "d - " . $row['timecompleted'];}else{ echo $row['completed'];} ?></span></td>
 				<td class='action'>
 				<div class="delete">
