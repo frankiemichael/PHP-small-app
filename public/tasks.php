@@ -95,8 +95,7 @@ mysqli_query($conn, "UPDATE todo SET completed=0, timecompleted=NULL WHERE id=".
 			<option style='background-color: red;'value="High">High</option>
 		</select><br>
 		<label for="staff"required>Set Staff</label><br>
-
-				<input type='checkbox' class="staff" name="staff[]" value="10"> ALL</input> <br>
+				<input type='checkbox' class="staffAll"> ALL</input> <br>
 				<input type='checkbox' class="staff" name="staff[]" value="1"> Daniel Michael</input> |
 				<input type='checkbox' class="staff" name="staff[]" value="2"> Mark Lea</input> |
 				<input type='checkbox' class="staff" name="staff[]" value="3"> Lisa Blake</input> |

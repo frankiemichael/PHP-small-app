@@ -84,5 +84,7 @@ else {
   $('.date, .task').show()
 }
 $('.staff').on('click')
-
+$('.staffAll').on('click', function(){
+  $('input:checkbox').not(this).prop('checked', this.checked)
+})
 })
